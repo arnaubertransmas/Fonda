@@ -5,9 +5,9 @@ const Header = () => {
     return (
         <div className="navbar bg-base-100 shadow-sm mb-5">
             <div className="flex-1">
-                <a href="" className="ml-5 text-xl font-bold no-underline hover:no-underline">
+                <Link href="/" className="ml-5 text-xl font-bold no-underline hover:no-underline">
                 Fonda Safaja
-                </a>
+                </Link>
             </div>
             <div className="flex-none">
                 <ul className="menu menu-horizontal px-1">

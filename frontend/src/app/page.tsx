@@ -1,12 +1,13 @@
-import Navbar from "../components/navbar";
+import Header from "../components/header";
+import Hero from "@/components/heroSection";
+import Footer from "@/components/footer";
 
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <Navbar />
-      <main className="container mx-auto p-8">
-        <h2 className="text-2xl font-bold">Initial Page</h2>
-      </main>
+      <Header />
+      <Hero />
+      <Footer />
     </div>
   );
 }

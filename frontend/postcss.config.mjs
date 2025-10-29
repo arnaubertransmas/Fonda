@@ -3,7 +3,7 @@
 // };
 
 // export default config;
-// postcss.config.mjs
+
 export default {
   plugins: {
     tailwindcss: {},

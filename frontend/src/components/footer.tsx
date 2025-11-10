@@ -9,14 +9,13 @@ const Footer = () => {
     <footer className="bg-base-200 text-base-content mt-10">
       <div className="footer sm:footer-horizontal p-10">
         <nav>
-          <h6 className="footer-title">Services</h6>
-          <a className="link link-hover">Branding</a>
-          <a className="link link-hover">Marketing</a>
-          <a className="link link-hover">Advertisement</a>
+          <h6 className="footer-title">Contacte</h6>
+          <a className="link link-hover">938 66 02 52</a>
+          <a className="link link-hover">Carretera Barcelona, 8, 08183 Barcelona</a>
         </nav>
 
         <nav>
-          <h6 className="footer-title">Company</h6>
+          <h6 className="footer-title">Info</h6>
           <a className="link link-hover">Sobre Nosaltres</a>
           <a className="link link-hover">Contacte</a>
           <a className="link link-hover"></a>
@@ -24,7 +23,8 @@ const Footer = () => {
 
         <nav>
           <h6 className="footer-title">Horari</h6>
-          <a className="">e</a>
+          <a className="">De Dijous a Dilluns de 8:30 a 19:00</a>
+          <a className="">Dimarts i Dimecres tancat</a>
         </nav>
       </div>
 

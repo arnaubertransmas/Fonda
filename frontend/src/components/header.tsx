@@ -56,9 +56,16 @@ const Header = () => {
                   La carta
                 </Link>
               </li>
-              {/* <li>
-                <a className={linkStyles}>Contacte</a>
-              </li> */}
+              <li>
+                <Link href="/allotjament" className={linkStyles}>
+                  Allotjament
+                </Link>
+              </li>
+              <li>
+                <Link href="/portal_wikilok" className={linkStyles}>
+                  Portal Wikilok
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

@@ -3,7 +3,7 @@ import Footer from "@/components/footer";
 import Header from "@/components/header";
 import LaCarta from "@/components/la_carta";
 
-export default function AboutUsPage() {
+export default function Carta() {
   return (
     <>
       <Header />

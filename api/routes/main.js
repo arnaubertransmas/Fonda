@@ -5,4 +5,8 @@ router.get("/", (req, res) => {
   res.send("Hello World");
 });
 
+router.get("/welcome", (req, res) => {
+  res.json({ message: "Hello from Express!" });
+});
+
 module.exports = router;

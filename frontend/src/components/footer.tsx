@@ -6,7 +6,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-base-200 text-base-content mt-10">
+    <footer className="bg-[#f5f1e8] text-base-content mt-20">
       <div className="footer sm:footer-horizontal p-10">
         <nav>
           <h6 className="footer-title">Contacte</h6>

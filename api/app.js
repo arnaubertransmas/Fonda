@@ -1,14 +1,17 @@
-const express = require("express");
+import express from "express";
+import cors from "cors";
+import router from "./routes/blogRoutes.js";
+
 const app = express();
-const port = 3001;
-const cors = require('cors');
 app.use(cors());
 
 
-// Importar rutes
-const mainRoutes = require("./routes/main");
-app.use("/", mainRoutes);
+app.use(express.json());
 
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+// Prefix de rutes
+app.use('/api/blog', router);
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+    console.log(`Servidor en marxa a http://localhost:${PORT}`);
 });

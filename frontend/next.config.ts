@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
       rules: {},
     },
   },
+  images: {
+    domains: ["cdn.shortpixel.ai"],
+  }
 };
 
 export default nextConfig;

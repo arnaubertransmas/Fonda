@@ -4,16 +4,35 @@ import { ObjectId } from "mongodb";
 const collection = db.collection("blogs");
 
 const getAll = async () => {
-  return await collection.find({}).toArray();
+  const items = await collection.find({}).toArray();
+  
+  // ⬅️ Convertir _id a string per cada item
+  return items.map(item => ({
+    ...item,
+    _id: item._id.toString(), // Convertir ObjectId a string
+  }));
 };
 
 const getById = async (id) => {
-  return await collection.findOne({ _id: new ObjectId(id) });
+  const item = await collection.findOne({ _id: new ObjectId(id) });
+  
+  // ⬅️ Convertir _id a string
+  if (item) {
+    return {
+      ...item,
+      _id: item._id.toString(),
+    };
+  }
+  
+  return null;
 };
 
 const addItem = async (item) => {
   const result = await collection.insertOne(item);
-  return { ...item, _id: result.insertedId };
+  return { 
+    ...item, 
+    _id: result.insertedId.toString() // ⬅️ Convertir a string
+  };
 };
 
 const updateItem = async (id, updatedData) => {
@@ -22,6 +41,13 @@ const updateItem = async (id, updatedData) => {
     { $set: updatedData },
     { returnDocument: "after" }
   );
+
+  if (result.value) {
+    return {
+      ...result.value,
+      _id: result.value._id.toString(), // ⬅️ Convertir a string
+    };
+  }
 
   return result.value;
 };

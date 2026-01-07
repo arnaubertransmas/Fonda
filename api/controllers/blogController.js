@@ -17,6 +17,7 @@ const getBlogs = async (req, res) => {
 const getBlog = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id, "id")
     const item = await getById(id);
 
     if (!item) {
@@ -29,17 +30,44 @@ const getBlog = async (req, res) => {
   }
 };
 
-const addBlog = async (req, res) => {
+// controllers/blogController.js
+const addEntry = async (req, res) => {
   try {
-    const addedItem = await addItem(req.body);
+    console.log('📦 Body rebut:', req.body);
+    console.log('📸 Files rebuts:', req.files);
+    
+    // Obtenir les rutes dels fitxers pujats
+    const imagePaths = req.files ? req.files.map(file => file.path) : [];
+    
+    console.log('🖼️ Image paths:', imagePaths);
+    
+    const blogData = {
+      name: req.body.name,
+      description: req.body.description,
+      url: req.body.url,
+      images: imagePaths,
+      createdAt: new Date()
+    };
+    
+    console.log('💾 Data a guardar:', blogData);
+    
+    const addedItem = await addItem(blogData);
+    
+    console.log('✅ Item afegit:', addedItem);
+    
     res.status(201).json(addedItem);
   } catch (error) {
-    res.status(500).json({ error: "Failed to add item" });
+    console.error('❌ Error complet:', error);
+    console.error('Stack:', error.stack);
+    res.status(500).json({ 
+      error: "Failed to add item",
+      message: error.message 
+    });
   }
 };
 
 export {
   getBlogs,
   getBlog,
-  addBlog
+  addEntry
 };

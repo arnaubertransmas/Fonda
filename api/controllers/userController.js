@@ -3,7 +3,6 @@ import { getUser } from "../models/userModel.js";
 const validateUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("rebut,", email, password)
     if (!email || !password) {
       return res.status(400).json({ 
         error: "Username i password són obligatoris" 

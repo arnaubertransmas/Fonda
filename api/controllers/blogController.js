@@ -2,7 +2,8 @@
 import {
   getAll,
   getById,
-  addItem
+  addItem,
+  deleteItem
 } from "../models/blogModel.js";
 
 const getBlogs = async (req, res) => {
@@ -17,7 +18,6 @@ const getBlogs = async (req, res) => {
 const getBlog = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id, "id")
     const item = await getById(id);
 
     if (!item) {
@@ -33,13 +33,9 @@ const getBlog = async (req, res) => {
 // controllers/blogController.js
 const addEntry = async (req, res) => {
   try {
-    console.log('📦 Body rebut:', req.body);
-    console.log('📸 Files rebuts:', req.files);
     
     // Obtenir les rutes dels fitxers pujats
     const imagePaths = req.files ? req.files.map(file => file.path) : [];
-    
-    console.log('🖼️ Image paths:', imagePaths);
     
     const blogData = {
       name: req.body.name,
@@ -49,11 +45,7 @@ const addEntry = async (req, res) => {
       createdAt: new Date()
     };
     
-    console.log('💾 Data a guardar:', blogData);
-    
     const addedItem = await addItem(blogData);
-    
-    console.log('✅ Item afegit:', addedItem);
     
     res.status(201).json(addedItem);
   } catch (error) {
@@ -66,8 +58,30 @@ const addEntry = async (req, res) => {
   }
 };
 
+const deleteBlog = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const deleted = await deleteItem(id);
+
+    if (deleted) {
+      res.status(200).json({ message: "Blog eliminat correctament", success: true });
+    } else {
+      res.status(404).json({ error: "Blog no trobat" });
+    }
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ 
+      error: "Failed to delete blog",
+      message: error.message 
+    });
+  }
+}
+
 export {
   getBlogs,
   getBlog,
-  addEntry
+  addEntry,
+  deleteBlog
 };

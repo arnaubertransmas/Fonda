@@ -6,9 +6,9 @@ const collection = db.collection("users");
 const getUser = async (email, password) => {
 
     const user = await collection.findOne({ email: email});
-    console.log(email, password, user, user.password)
+    // console.log(email, password, user, user.password)
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log(isPasswordValid)
+    // console.log(isPasswordValid)
     if (!isPasswordValid) {
         return null
     }

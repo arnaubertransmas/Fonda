@@ -58,6 +58,29 @@ export async function addBlog(blog: FormData) {
   }
 }
 
+export async function deleteBlog(id: string): Promise<Record<string, unknown>> {
+  try {
+    const response = await fetch(`http://localhost:3001/api/blog/deleteBlog/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      console.error('Error del servidor:', data);
+      throw new Error(data.message || data.error || 'Error al eliminar el blog');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error complet:', error);
+    throw error;
+  }
+}
+
 export const getCookie = (name: string): string | null => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);

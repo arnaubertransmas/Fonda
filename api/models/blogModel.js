@@ -6,7 +6,6 @@ const collection = db.collection("blogs");
 const getAll = async () => {
   const items = await collection.find({}).toArray();
   
-  // ⬅️ Convertir _id a string per cada item
   return items.map(item => ({
     ...item,
     _id: item._id.toString(), // Convertir ObjectId a string
@@ -16,7 +15,6 @@ const getAll = async () => {
 const getById = async (id) => {
   const item = await collection.findOne({ _id: new ObjectId(id) });
   
-  // ⬅️ Convertir _id a string
   if (item) {
     return {
       ...item,

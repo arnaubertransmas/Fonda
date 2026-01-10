@@ -55,7 +55,6 @@ export default function AddBlog() {
         });
 
         await addBlog(form);
-        console.log('Blog creat correctament!');
         
         // Redirect a la pàgina portal_wikilok
         router.push('/portal_wikilok');

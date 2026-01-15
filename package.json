@@ -1,0 +1,9 @@
+{
+  "name": "fonda",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd api && npm install",
+    "start": "cd api && npm start"
+  }
+}

@@ -17,12 +17,20 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
 
-    if (await validateUser(email, password)) {
-        document.cookie = "admin=true; path=/";
+    try {
+      const result = await validateUser(email, password);
+      
+      if (result.success) {
+        console.log('Login exitós:', result.user);
         router.push("/portal_wikilok");
-    } else {
-      setError("Credencials Incorrectes ")
-      setLoading(false)
+      } else {
+        setError(result.error || "Credencials Incorrectes");
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error('Error en login:', err);
+      setError("Error de connexió. Torna-ho a intentar.");
+      setLoading(false);
     }
   };
 

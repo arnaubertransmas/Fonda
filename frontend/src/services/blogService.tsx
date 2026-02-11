@@ -1,17 +1,31 @@
-import axios from 'axios';
+import axios from '../config/axiosConfig';
+import { setAuthToken } from '../config/axiosConfig';
 
 const API_ROUTE = process.env.NEXT_PUBLIC_API_ROUTE;
 
 export async function validateUser(email: string, password: string) {
   try {
-    await axios.post(`${API_ROUTE}/validateUser`, {
+    const response = await axios.post(`${API_ROUTE}/validateUser`, {
       email,
       password
     });
-    return true;
+    
+    if (response.data.token) {
+      setAuthToken(response.data.token); 
+      document.cookie = "admin=true; path=/; max-age=604800";
+    }
+    
+    return {
+      success: true,
+      user: response.data.user,
+      token: response.data.token
+    };
   } catch (error) {
     console.error('Validation error:', error);
-    return false;
+    return {
+      success: false,
+      error: 'Credencials incorrectes'
+    };
   }
 }
 
@@ -64,12 +78,3 @@ export async function deleteBlog(id: string): Promise<Record<string, unknown>> {
     throw error;
   }
 }
-
-export const getCookie = (name: string): string | null => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) {
-    return parts.pop()?.split(';').shift() || null;
-  }
-  return null;
-};

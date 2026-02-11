@@ -1,4 +1,5 @@
 import { getUser } from "../models/userModel.js";
+import jwt from 'jsonwebtoken';
 
 const validateUser = async (req, res) => {
   try {
@@ -17,10 +18,21 @@ const validateUser = async (req, res) => {
       });
     }
 
+    const token = jwt.sign(
+      { 
+        userId: user._id || user.id, 
+        email: user.email 
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' } 
+    );
+
     res.json({ 
       success: true, 
+      token,
       user 
     });
+    
   } catch (error) {
     console.error("Error validant usuari:", error);
     res.status(500).json({ error: "Failed to validate user" });

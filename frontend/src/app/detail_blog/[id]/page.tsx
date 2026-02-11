@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import { getCookie } from "@/services/blogService";
+import { getCookie } from "@/config/axiosConfig";
 
 interface Blog {
   _id: string;

@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { getBlogs } from "@/services/blogService";
 import Link from "next/link";
-import { getCookie } from "@/services/blogService";
+import { logout, getCookie } from "../../config/axiosConfig"
+import { getBlogs } from "@/services/blogService";
 
 interface Blog {
   _id: string;
@@ -23,7 +23,6 @@ const isAdmin = (): boolean => {
 const Blog = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [isAdminUser, setIsAdminUser] = useState(false);
 
   useEffect(() => {
@@ -42,13 +41,14 @@ const Blog = () => {
     fetchBlogs();
   }, []);
 
-  const filteredBlogs = selectedTag
-    ? blogs.filter((blog) => blog.tags?.includes(selectedTag))
-    : blogs;
-
   const truncateText = (text: string, maxLength: number = 50) => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
+  };
+
+  const handleLogout = () => {
+    logout();
+    window.location.href = "/portal_wikilok";
   };
 
   if (loading) {
@@ -68,29 +68,19 @@ const Blog = () => {
           </h1>
 
           {isAdminUser && (
-            <Link href="/add-blog" className="btn btn-primary mb-8">
-              Afegir blog
-            </Link>
-          )}
-
-          {selectedTag && (
-            <div className="flex justify-center mb-8">
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-gray-600">Filtrant per:</span>
-                <span className="badge badge-primary">#{selectedTag}</span>
-                <button
-                  onClick={() => setSelectedTag(null)}
-                  className="btn btn-xs btn-ghost"
-                >
-                  Netejar
-                </button>
-              </div>
+            <div className="flex gap-4 mb-8">
+              <Link href="/add-blog" className="btn btn-primary">
+                Afegir blog
+              </Link>
+              <button onClick={handleLogout} className="btn btn-outline">
+                Logout
+              </button>
             </div>
           )}
 
-          {filteredBlogs.length > 0 ? (
+          {blogs.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredBlogs.map((blog) => {
+              {blogs.map((blog) => {
                 const blogId = blog._id;
                 const defaultImage = "/placeholder.png";
                 
@@ -118,7 +108,6 @@ const Blog = () => {
                     </Link>
 
                     <div className="card-body">
-                      {/* Títol amb Link */}
                       <Link href={`/detail_blog/${blogId}`}>
                         <h2 className="card-title text-fonda-black hover:text-primary cursor-pointer">
                           {blog.name}
@@ -128,10 +117,8 @@ const Blog = () => {
                         </p>
                       </Link>
 
-                      {/* URL del blog */}
                       {blogUrl && (
-                        <a
-                          href={blogUrl}
+                        <a href={blogUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-sm text-blue-600 hover:underline break-all"
@@ -140,26 +127,23 @@ const Blog = () => {
                         </a>
                       )}
 
-                      {/* Tags */}
                       {blog.tags && blog.tags.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-2">
                           {blog.tags.map((tag, index) => (
-                            <button
+                            <span
                               key={`${blogId}-tag-${index}`}
-                              onClick={() => setSelectedTag(tag)}
-                              className="badge badge-outline badge-sm hover:badge-primary cursor-pointer"
+                              className="badge badge-outline badge-sm"
                             >
                               #{tag}
-                            </button>
+                            </span>
                           ))}
                         </div>
                       )}
 
-                      {/* Links addicionals */}
                       {blog.links && blog.links.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-4">
                           {blog.links.map((link, index) => (
-                            <a
+                            <a 
                               key={`${blogId}-link-${index}`}
                               href={link.url}
                               target="_blank"
@@ -179,7 +163,7 @@ const Blog = () => {
           ) : (
             <div className="text-center">
               <p className="text-xl text-gray-500">
-                No hi ha blogs per aquesta etiqueta
+                No hi ha blogs disponibles
               </p>
             </div>
           )}

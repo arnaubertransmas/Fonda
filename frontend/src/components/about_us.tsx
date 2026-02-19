@@ -21,9 +21,6 @@ const AboutUs = () => {
       <div className="container mx-auto px-6 pb-16 max-w-7xl space-y-20">
         <div className="grid md:grid-cols-2 gap-8 items-stretch">
           <div className="bg-white/90 backdrop-blur-sm p-10 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
-            <h2 className="text-3xl font-bold text-[#471D19] mb-6 font-serif">
-              Missió
-            </h2>
             <p className="text-gray-700 leading-relaxed text-justify flex-1">
               Fer que cada visita a la Fonda Safaja sigui una experiència autèntica que connecti persones a través de la tradició i el sabor de
               la &apos;cuina de la iaia&apos;.
@@ -53,9 +50,6 @@ const AboutUs = () => {
             />
           </div>
           <div className="bg-white/90 backdrop-blur-sm p-10 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
-            <h2 className="text-3xl font-bold text-[#471D19] mb-6 font-serif">
-              Valors
-            </h2>
             <p className="text-gray-700 leading-relaxed text-justify flex-1">
               Ser el lloc de referència on la tradició i la senzillesa no es perdin, oferint a les futures generacions tradicions que connecten,
               uneixen i creen moments inoblidables.

@@ -62,10 +62,13 @@ const Blog = () => {
   return (
     <>
       <div className="bg-[#f5f1e8] py-12 px-4 pb-8">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl font-bold text-center mt-5 mb-10 text-fonda-black">
+        <div className="max-w-7xl mx-auto mt-5">
+          <h1 className="text-5xl font-serif font-bold text-[#471D19] text-center mb-10">
             Portal:
           </h1>
+          <p className="py-4 text-lg text-gray-600 mb-10">
+            blablabla que podem posar aqui
+          </p>
 
           {isAdminUser && (
             <div className="flex gap-4 mb-8">

@@ -1,4 +1,3 @@
-// controllers/blogController.js
 import {
   getAll,
   getById,

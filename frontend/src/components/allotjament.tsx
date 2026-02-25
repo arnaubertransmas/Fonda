@@ -1,39 +1,51 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const Allotjament = () => {
   return (
     <div className="min-h-screen bg-[#f5f1e8] text-fonda-black">
 
-      {/* HERO IMAGE */}
       <div className="relative w-full h-[70vh]">
-        <Image
+        <video
+          src="/57.mp4"
+          autoPlay
+          loop
+          muted
+          className="object-cover w-full h-full"
+        />
+        {/* <Image
           src="/rebranding.jpg"
           alt="Allotjaments"
           fill
           className="object-cover"
           priority
-        />
+        /> */}
       </div>
 
-      {/* CONTENT */}
       <div className="max-w-4xl mx-auto p-10 mt-3">
-        <h1 className="text-4xl font-bold text-center mb-6">
-            Dormir bé per estar bé
+        <h1 className="text-5xl font-serif font-bold text-[#471D19] text-center mb-5">
+          Un descans senzill, tranquil i ben cuidat
         </h1>
 
-        <p className="mb-8">
-            Còmodes, netes i tranquil·les. Aquests tres adjectius definirien les nostres habitacions. 
-            La Fonda té actualment 5 habitacions dobles (amb possibilitat de afegir llits supletoris), 
-            totes amb bany complet i calefacció. També hi ha un espai d’esbarjo comú equipat amb taules, 
-            cadires i televisió destinat a passar l’estona jugant a cartes, mirant el programa preferit 
-            o compartint amb les anècdotes del dia els amics.
+        <p className="py-4 text-lg text-gray-600">
+          Les habitacions de la Fonda Safaja estan pensades per baixar el ritme
+          i descansar com toca: espais comodes, tranquils i cuidats al detall,
+          ideals per desconnectar i recuperar energia. Disposem de 5 habitacions.
+          Truca&apos;ns i t&apos;explicarem disponibilitat, opcions i la millor
+          proposta segons el teu pla.
         </p>
+        
 
-        <h4 className="text-xl font-medium text-center">
-            Truca’ns per fer una reserva i et recomanarem el millor per a tu!
-        </h4>
-
+        <div className="flex justify-center mt-4">
+          <Link
+            href="tel:+34938660252"
+            className="btn text-black border-black"
+            style={{ backgroundColor: "transparent" }}
+          >
+            Reserva
+          </Link>
+        </div>
       </div>
     </div>
   );

@@ -36,11 +36,25 @@ const AboutUs = () => {
               alt="Missió Fonda Safaja"
               fill
               className="object-cover"
+              priority
             />
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 items-stretch">
+        <div className="grid md:grid-cols-1 gap-8 items-stretch">
+          <div className="relative min-h-[450px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2977.65235417884!2d2.1495913174438397!3d41.72802000000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4c2a4529d7065%3A0xc7e142aa1b5d12f3!2sFonda%20Safaja!5e0!3m2!1sen!2ses!4v1772033766499!5m2!1sen!2ses" 
+              width="100%" 
+              height="100%" 
+              style={{border: 0}} 
+              allowFullScreen loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
+        
+        {/* <div className="grid md:grid-cols-2 gap-8 items-stretch">
           <div className="relative min-h-[450px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
             <Image
               src="/menjar.jpg"
@@ -59,7 +73,7 @@ const AboutUs = () => {
               connectar, celebrar i gaudir d&apos;allò que realment importa: la proximitat amb els altres i amb el territori.
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

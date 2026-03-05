@@ -13,7 +13,7 @@ const Hero = () => {
                 alt="Fonda Safaja"
                 width={700}
                 height={600}
-                className="w-full rounded-lg shadow-2xl object-cover"
+                className="w-full rounded-lg object-cover"
               />
           </div>
           <div className="w-full lg:w-2/3 flex items-start flex-col">
@@ -39,7 +39,7 @@ const Hero = () => {
               alt="Fonda Safaja"
               width={700}
               height={600}
-              className="w-full rounded-lg shadow-2xl object-cover"
+              className="w-full rounded-lg object-cover"
             />
           </div>
           <div className="w-full lg:w-2/3 flex flex-col items-end mr-5">
@@ -68,7 +68,7 @@ const Hero = () => {
               alt="Fonda Safaja"
               width={700} 
               height={600}
-              className="w-full rounded-lg shadow-2xl object-cover"
+              className="w-full rounded-lg object-cover"
             />
           </div>
           <div className="w-full lg:w-2/3 flex flex-col items-start">

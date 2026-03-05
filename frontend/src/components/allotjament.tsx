@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
 
 const Allotjament = () => {
@@ -14,13 +13,6 @@ const Allotjament = () => {
           muted
           className="object-cover w-full h-full"
         />
-        {/* <Image
-          src="/rebranding.jpg"
-          alt="Allotjaments"
-          fill
-          className="object-cover"
-          priority
-        /> */}
       </div>
 
       <div className="max-w-4xl mx-auto p-10 mt-3">
@@ -40,10 +32,10 @@ const Allotjament = () => {
         <div className="flex justify-center mt-4">
           <Link
             href="tel:+34938660252"
-            className="btn text-black border-black"
+            className="btn text-black border-black text-xl"
             style={{ backgroundColor: "transparent" }}
           >
-            Reserva
+            Descobreix més detalls
           </Link>
         </div>
       </div>

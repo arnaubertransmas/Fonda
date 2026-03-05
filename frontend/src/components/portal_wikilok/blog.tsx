@@ -4,16 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { logout, getCookie } from "../../config/axiosConfig"
 import { getBlogs } from "@/services/blogService";
-
-interface Blog {
-  _id: string;
-  name: string;
-  description: string;
-  url?: string;
-  images?: string[];
-  links?: { label: string; url: string }[];
-  tags?: string[];
-}
+import BlogInterface from "@/interfaces/blogInterface";
 
 const isAdmin = (): boolean => {
   const adminCookie = getCookie('admin');
@@ -21,7 +12,7 @@ const isAdmin = (): boolean => {
 };
 
 const Blog = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [blogs, setBlogs] = useState<BlogInterface[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdminUser, setIsAdminUser] = useState(false);
 
@@ -64,7 +55,7 @@ const Blog = () => {
       <div className="bg-[#f5f1e8] py-12 px-4 pb-8">
         <div className="max-w-7xl mx-auto mt-5">
           <h1 className="text-5xl font-serif font-bold text-[#471D19] text-center mb-10">
-            Portal:
+            Descobreix el Moianés:
           </h1>
           <p className="py-4 text-lg text-gray-600 mb-10">
             blablabla que podem posar aqui
@@ -90,8 +81,6 @@ const Blog = () => {
                 const imageSrc = blog.images?.[0]
                 ? `http://localhost:3001/uploads/${blog.images[0].split("/").pop()}`
                 : defaultImage;
-
-                const blogUrl = blog.url;
 
                 return (
                   <div
@@ -119,16 +108,6 @@ const Blog = () => {
                           {truncateText(blog.description)}
                         </p>
                       </Link>
-
-                      {blogUrl && (
-                        <a href={blogUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-blue-600 hover:underline break-all"
-                        >
-                          🔗 {blogUrl}
-                        </a>
-                      )}
 
                       {blog.tags && blog.tags.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-2">

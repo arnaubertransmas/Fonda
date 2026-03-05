@@ -43,7 +43,7 @@ const Header = () => {
             <ul className="menu menu-horizontal px-1 gap-6">
               <li>
                 <Link href="/" className={linkStyles}>
-                  Home
+                  Inici
                 </Link>
               </li>
               <li>
@@ -63,7 +63,7 @@ const Header = () => {
               </li>
               <li>
                 <Link href="/portal_wikilok" className={linkStyles}>
-                  Portal Wikilok
+                  Descobreix el Territori
                 </Link>
               </li>
             </ul>

@@ -1,5 +1,4 @@
-import axios from '../config/axiosConfig';
-import { setAuthToken } from '../config/axiosConfig';
+import axios, { setAuthToken } from '../config/axiosConfig';
 
 const API_ROUTE = process.env.NEXT_PUBLIC_API_ROUTE;
 

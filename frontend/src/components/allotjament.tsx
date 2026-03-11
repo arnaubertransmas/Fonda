@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next/link";
+import { TrucarLink } from "@/utils/links";
 
 const Allotjament = () => {
   return (
@@ -16,7 +16,7 @@ const Allotjament = () => {
       </div>
 
       <div className="max-w-4xl mx-auto p-10 mt-3">
-        <h1 className="text-5xl font-serif font-bold text-[#471D19] text-center mb-5">
+        <h1 className="text-5xl font-bold text-[#471D19] text-center mb-5">
           Un descans senzill, tranquil i ben cuidat
         </h1>
 
@@ -30,13 +30,11 @@ const Allotjament = () => {
         
 
         <div className="flex justify-center mt-4">
-          <Link
-            href="tel:+34938660252"
+          <TrucarLink
             className="btn text-black border-black text-xl"
             style={{ backgroundColor: "transparent" }}
-          >
-            Descobreix més detalls
-          </Link>
+            text="Descobreix més detalls"
+          />
         </div>
       </div>
     </div>

@@ -1,7 +1,6 @@
 import React from "react";
-
 import Link from "next/link";
-
+import { MapsLink, TrucarLink } from "@/utils/links";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -10,15 +9,14 @@ const Footer = () => {
       <div className="footer sm:footer-horizontal p-10">
         <nav>
           <h6 className="footer-title">Contacte</h6>
-          <a className="link link-hover">938 66 02 52</a>
-          <a className="link link-hover">Carretera Barcelona, 8, 08183 Barcelona</a>
+          <TrucarLink className="link link-hover" text="De Dijous a Dilluns de 8:30 a 19:00"/>
+          <MapsLink className="link link-hover" text="Carretera Barcelona, 8, 08183 Barcelona"/>
         </nav>
 
         <nav>
           <h6 className="footer-title">Info</h6>
-          <a className="link link-hover">Sobre Nosaltres</a>
-          <a className="link link-hover">Allotjament</a>
-          <a className="link link-hover"></a>
+          <Link href={"about_us"} className="link link-hover">Sobre Nosaltres</Link>
+          <Link href={"allotjament"} className="link link-hover">Allotjament</Link>
         </nav>
 
         <nav>
@@ -29,7 +27,6 @@ const Footer = () => {
       </div>
 
       <div className="flex justify-center py-4">
-        {/* Instagram Icon */}
         <Link href="https://www.instagram.com/fondasafaja/" className="mx-2 mb-4" target="_blank">
           <svg
             width="24px"

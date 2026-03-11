@@ -54,7 +54,7 @@ const Blog = () => {
     <>
       <div className="bg-[#f5f1e8] py-12 px-4 pb-8">
         <div className="max-w-7xl mx-auto mt-5">
-          <h1 className="text-5xl font-serif font-bold text-[#471D19] text-center mb-10">
+          <h1 className="text-5xl font-bold text-[#471D19] text-center mb-10">
             Descobreix el Moianés:
           </h1>
           <p className="py-4 text-lg text-gray-600 mb-10">
@@ -104,7 +104,7 @@ const Blog = () => {
                         <h2 className="card-title text-fonda-black hover:text-primary cursor-pointer">
                           {blog.name}
                         </h2>
-                        <p className="text-gray-700">
+                        <p className="text-gray-700 break-words overflow-hidden">
                           {truncateText(blog.description)}
                         </p>
                       </Link>

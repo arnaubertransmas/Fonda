@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { MapsLink, TrucarLink } from "@/utils/links";
 
 const Hero = () => {
   return (
@@ -20,13 +21,11 @@ const Hero = () => {
             <p className="text-lg text-gray-700 leading-relaxed italic">
               &quot;A la taula i al llit, al primer crit!&quot;
             </p>
-            <Link
-              href="tel:+34938660252"
-              className="btn text-black border-black mt-4"
-              style={{ backgroundColor: "transparent" }}
-            >
-              Reserva
-            </Link>
+            <TrucarLink 
+              className="btn text-black border-black mt-4" 
+              style={{ backgroundColor: "transparent" }} 
+              text="Reserva"
+            />
           </div>
         </div>
       </div>
@@ -46,15 +45,11 @@ const Hero = () => {
             <p className="text-lg text-gray-700 leading-relaxed italic">
               Preservem l’esperit de sempre perquè cada generació s’hi trobi com a casa
             </p>
-            <Link
-              href="https://www.google.com/maps/search/?api=1&query=Fonda+Safaja+Sant+Quirze+Safaja"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn text-black border-black mt-4"
+            <MapsLink 
+              className="btn text-black border-black mt-4" 
               style={{ backgroundColor: "transparent" }}
-            >
-              Troba&apos;ns
-            </Link>
+              text="Troba&apos;ns"
+            />
           </div>
           
         </div>

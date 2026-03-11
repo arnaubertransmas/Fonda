@@ -8,8 +8,15 @@
   --foreground: #171717;
 }
 
+@font-face {
+  font-family: "ABCFavoritMono-Bold";
+  src: url("/fonts/ABCFavoritMono-Bold.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
+  font-family: "ABCFavoritMono-Bold", sans-serif;
   background-color: var(--background);
   color: var(--foreground);
-  font-family: system-ui, sans-serif;
 }

@@ -38,7 +38,7 @@ export default function LoginPage() {
     <>
     <Header />
     <div className="min-h-screen flex items-start justify-center pt-20" style={{ backgroundColor: '#f5f1e8' }}>
-      <div className="w-full max-w-md rounded-2xl shadow-2xl" style={{ 
+      <div className="w-full max-w-md rounded-2xl" style={{ 
         backgroundColor: '#ffffff',
         border: '1px solid #e5e0d5'
       }}>

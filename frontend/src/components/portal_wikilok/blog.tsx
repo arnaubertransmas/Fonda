@@ -85,7 +85,7 @@ const Blog = () => {
                 return (
                   <div
                     key={blogId}
-                    className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all hover:scale-[1.02]"
+                    className="card bg-base-100 transition-all hover:scale-[1.02]"
                   >
                     <Link href={`/detail_blog/${blogId}`}>
                       <figure className="bg-gray-200 cursor-pointer">

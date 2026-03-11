@@ -73,7 +73,7 @@ export default function AddBlog() {
           <p className="text-[#4a3933] text-lg">Comparteix les teves rutes i aventures</p>
         </div>
 
-        <div className="card bg-white shadow-xl border-2 border-[#4a3933]/10">
+        <div className="card bg-white border-2 border-[#4a3933]/10">
           <div className="card-body p-8 lg:p-12">
             <form onSubmit={handleSubmit} className="space-y-6">
               
@@ -176,7 +176,7 @@ export default function AddBlog() {
               <div className="form-control mt-8">
                 <button 
                   type="submit"
-                  className="btn btn-lg w-full bg-[#471D19] hover:bg-[#3a1614] text-white shadow-lg hover:shadow-xl transition-all text-lg border-none"
+                  className="btn btn-lg w-full bg-[#471D19] hover:bg-[#3a1614] text-white transition-all text-lg border-none"
                 >
                   Publicar Entrada
                 </button>

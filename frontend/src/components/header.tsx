@@ -27,7 +27,7 @@ const Header = () => {
   return (
     <>
       <div
-        className={`navbar bg-[#f5f1e8] py-6 w-full fixed top-0 left-0 z-50 transition-transform duration-300 shadow-sm ${
+        className={`navbar bg-[#f5f1e8] py-6 w-full fixed top-0 left-0 z-50 transition-transform duration-300 ${
           visible ? "translate-y-0" : "-translate-y-full"
         }`}
       >

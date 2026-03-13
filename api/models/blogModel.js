@@ -8,7 +8,7 @@ const getAll = async () => {
   
   return items.map(item => ({
     ...item,
-    _id: item._id.toString(), // Convertir ObjectId a string
+    _id: item._id.toString(), 
   }));
 };
 
@@ -25,11 +25,17 @@ const getById = async (id) => {
   return null;
 };
 
+const getCategories = async () => {
+  const categories = await collection.distinct('category')
+
+  return categories
+}
+
 const addItem = async (item) => {
   const result = await collection.insertOne(item);
   return { 
     ...item, 
-    _id: result.insertedId.toString() // ⬅️ Convertir a string
+    _id: result.insertedId.toString() 
   };
 };
 
@@ -43,7 +49,7 @@ const updateItem = async (id, updatedData) => {
   if (result.value) {
     return {
       ...result.value,
-      _id: result.value._id.toString(), // ⬅️ Convertir a string
+      _id: result.value._id.toString(),
     };
   }
 
@@ -61,6 +67,7 @@ const deleteItem = async (id) => {
 export {
   getAll,
   getById,
+  getCategories,
   addItem,
   updateItem,
   deleteItem

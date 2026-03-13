@@ -1,6 +1,7 @@
 import {
   getAll,
   getById,
+  getCategories,
   addItem,
   deleteItem
 } from "../models/blogModel.js";
@@ -8,7 +9,7 @@ import {
 const getBlogs = async (req, res) => {
   try {
     const items = await getAll();
-    res.json(items);
+    return res.json(items);
   } catch (error) {
     res.status(500).json({ error: "Failed to retrieve items" });
   }
@@ -29,22 +30,36 @@ const getBlog = async (req, res) => {
   }
 };
 
-// controllers/blogController.js
+const getAllCategories = async(req, res) => {
+  try {
+    const categories = await getCategories()
+    return res.json(categories)
+    
+  } catch (error) {
+    res.status(500).json({'error': "Failded to retrieve categories"})
+  }
+}
+
 const addEntry = async (req, res) => {
   try {
-    
-    // Obtenir les rutes dels fitxers pujats
+
+    const VALID_CATEGORIES = ['senderisme', 'btt', 'ciclisme', 'running', 'altres'];
     const imagePaths = req.files ? req.files.map(file => file.path) : [];
     
+    if (!VALID_CATEGORIES.includes(req.body.category)) {
+      return res.status(400).json({ error: 'Categoria no vàlida' });
+  }
     const blogData = {
       name: req.body.name,
       description: req.body.description,
+      category: req.body.category,
       url: req.body.url,
       images: imagePaths,
       createdAt: new Date()
     };
     
     const addedItem = await addItem(blogData);
+    // console.log(addedItem)
     
     res.status(201).json(addedItem);
   } catch (error) {
@@ -81,6 +96,7 @@ const deleteBlog = async (req, res) => {
 export {
   getBlogs,
   getBlog,
+  getAllCategories,
   addEntry,
   deleteBlog
 };

@@ -1,20 +1,25 @@
 'use client'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Upload } from 'lucide-react';
+import { Upload, Mountain } from 'lucide-react';
 import { addBlog } from '@/services/blogService';
+import { CATEGORIES_SELECT } from '@/utils/category_labels';
 
 export default function AddBlog() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
+    category: '',
     description: '',
     url: '',
     images: [] as File[]
   });
   const [dragActive, setDragActive] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -27,15 +32,15 @@ export default function AddBlog() {
   const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") setDragActive(true);
-    if (e.type === "dragleave") setDragActive(false);
+    if (e.type === 'dragenter' || e.type === 'dragover') setDragActive(true);
+    if (e.type === 'dragleave') setDragActive(false);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+    if (e.dataTransfer.files?.[0]) {
       const files = Array.from(e.dataTransfer.files) as File[];
       setFormData(prev => ({ ...prev, images: files }));
     }
@@ -43,105 +48,134 @@ export default function AddBlog() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    if (!formData.category) return
+    setLoading(true);
 
     try {
-        const form = new FormData();
-        form.append('name', formData.name);
-        form.append('description', formData.description);
-        form.append('url', formData.url);
+      const form = new FormData();
+      form.append('name', formData.name);
+      form.append('category', formData.category);
+      form.append('description', formData.description);
+      form.append('url', formData.url);
+      formData.images.forEach(image => form.append('images', image));
 
-        formData.images.forEach(image => {
-          form.append('images', image);
-        });
+      await addBlog(form);
+      router.push('/portal_wikilok');
 
-        await addBlog(form);
-        
-        // Redirect a la pàgina portal_wikilok
-        router.push('/portal_wikilok');
     } catch (error) {
-        console.error('Error al crear el blog:', error);
+      console.error('Error al crear el blog:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f1e8] flex items-center justify-center">
-      <div className="w-full max-w-3xl">
+    <div className="min-h-screen bg-[#f5f1e8] flex items-start justify-center pt-6 pb-12 px-4">
+      <div className="w-full max-w-2xl">
+
+        {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold text-[#471D19] mb-3">
-            Afegir Nova Entrada
-          </h1>
-          <p className="text-[#4a3933] text-lg">Comparteix les teves rutes i aventures</p>
+          <div className="flex justify-center mb-4">
+            <div className="bg-[#471D19] text-white rounded-full p-4">
+              <Mountain className="w-8 h-8" />
+            </div>
+          </div>
+          <h1 className="text-4xl font-bold text-[#471D19] mb-2">Afegir Nova Entrada</h1>
         </div>
 
-        <div className="card bg-white border-2 border-[#4a3933]/10">
-          <div className="card-body p-8 lg:p-12">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              
-              {/* Name */}
-              <div className="form-control">
-                <label className="label">
+        {/* Card */}
+        <div className="card bg-base-100 shadow-xl border border-[#4a3933]/10">
+          <div className="card-body p-8 gap-6">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+
+              {/* Nom de la ruta */}
+              <label className="form-control w-full">
+                <div className="label">
                   <span className="label-text font-semibold text-[#471D19] flex items-center gap-2">
-                    Nom de la Ruta
+                    <p className="w-4 h-4">Nom</p>
                   </span>
-                </label>
+                </div>
                 <input
                   type="text"
                   name="name"
-                  placeholder="Nom"
-                  className="input input-lg w-full border-[#4a3933]/20 focus:border-[#471D19] focus:outline-none transition-all bg-[#f5f1e8]/30"
+                  placeholder="Castell de la Popa"
+                  className="input input-bordered w-full focus:border-[#471D19] focus:outline-none"
                   value={formData.name}
                   onChange={handleChange}
                   required
                 />
-              </div>
+              </label>
 
-              {/* Description */}
-              <div className="form-control">
-                <label className="label">
+              {/* Descripció */}
+              <label className="form-control w-full">
+                <div className="label">
                   <span className="label-text font-semibold text-[#471D19] flex items-center gap-2">
-                    Descripció
+                    <p className="w-4 h-4">Descripció</p>
                   </span>
-                </label>
+                </div>
                 <textarea
                   name="description"
-                  placeholder="Descripció..."
-                  className="textarea textarea-lg h-32 w-full border-[#4a3933]/20 focus:border-[#471D19] focus:outline-none transition-all resize-none bg-[#f5f1e8]/30"
+                  placeholder="Descripció"
+                  className="textarea textarea-bordered h-32 w-full resize-none focus:border-[#471D19] focus:outline-none"
                   value={formData.description}
                   onChange={handleChange}
                   required
                 />
-              </div>
+              </label>
 
-              {/* URL */}
-              <div className="form-control">
-                <label className="label">
+              {/* Categoria */}
+              <label className="form-control w-full">
+                <div className="label">
                   <span className="label-text font-semibold text-[#471D19] flex items-center gap-2">
-                    Enllaç Wikiloc
+                    <p className="w-4 h-4">Categoria</p>
                   </span>
-                </label>
+                </div>
+                <select
+                  name="category"
+                  className="select select-bordered w-full"
+                  value={formData.category}
+                  onChange={handleChange}
+                  required
+                >
+                  {CATEGORIES_SELECT.map(cat => (
+                    <option key={cat.value} value={cat.value} disabled={cat.value === ''}>
+                      {cat.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              {/* URL Wikiloc */}
+              <label className="form-control w-full">
+                <div className="label">
+                  <span className="label-text font-semibold text-[#471D19] flex items-center gap-2">
+                    <p className="w-4 h-4">Enllaç Wikiloc</p> 
+                  </span>
+                </div>
                 <input
                   type="url"
                   name="url"
                   placeholder="https://ca.wikiloc.com/..."
-                  className="input input-lg w-full border-[#4a3933]/20 focus:border-[#471D19] focus:outline-none transition-all bg-[#f5f1e8]/30"
+                  className="input input-bordered w-full focus:border-[#471D19] focus:outline-none"
                   value={formData.url}
                   onChange={handleChange}
                   required
                 />
-              </div>
+              </label>
 
-              {/* Images */}
-              <div className="form-control">
-                <label className="label">
+              {/* Imatges */}
+              <div className="form-control w-full">
+                <div className="label">
                   <span className="label-text font-semibold text-[#471D19] flex items-center gap-2">
-                    Imatges
+                    <p className="w-4 h-4">Imatges</p>
                   </span>
-                </label>
+                </div>
 
                 <div
-                  className={`relative border-2 border-dashed rounded-2xl p-8 transition-all cursor-pointer ${
-                    dragActive 
-                      ? 'border-[#471D19] bg-[#471D19]/5' 
+                  className={`relative border-2 border-dashed rounded-2xl p-8 transition-all cursor-pointer text-center ${
+                    dragActive
+                      ? 'border-[#471D19] bg-[#471D19]/5'
                       : 'border-[#4a3933]/30 hover:border-[#471D19] hover:bg-[#471D19]/5'
                   }`}
                   onDragEnter={handleDrag}
@@ -158,29 +192,33 @@ export default function AddBlog() {
                     onChange={handleImageChange}
                     className="hidden"
                   />
-                  <div className="text-center">
-                    <Upload className="w-12 h-12 mx-auto mb-4 text-[#4a3933]/60" />
-                    <p className="text-[#4a3933] font-medium mb-1">Deixa anar les imatges aquí, o fes clic per seleccionar</p>
-                    <p className="text-sm text-[#4a3933]/60">PNG, JPG fins a 10MB</p>
-                  </div>
+                  <Upload className="w-10 h-10 mx-auto mb-3 text-[#4a3933]/50" />
+                  <p className="text-[#4a3933] font-medium text-sm mb-1">
+                    Deixa anar les imatges aquí, o fes clic per seleccionar
+                  </p>
+                  <p className="text-xs text-[#4a3933]/50">PNG, JPG fins a 10MB</p>
 
                   {formData.images.length > 0 && (
-                    <div className="mt-4 p-4 bg-[#471D19]/10 rounded-lg border border-[#471D19]/20">
-                      <p className="text-[#471D19] font-medium text-center">✓ {formData.images.length} fitxer(s) seleccionat(s)</p>
+                    <div className="alert alert-success mt-4 py-2 px-4 text-sm justify-center">
+                      ✓ {formData.images.length} fitxer{formData.images.length > 1 ? 's' : ''} seleccionat{formData.images.length > 1 ? 's' : ''}
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Submit */}
-              <div className="form-control mt-8">
-                <button 
-                  type="submit"
-                  className="btn btn-lg w-full bg-[#471D19] hover:bg-[#3a1614] text-white transition-all text-lg border-none"
-                >
-                  Publicar Entrada
-                </button>
-              </div>
+              <button
+                type="submit"
+                className="btn btn-lg w-full bg-[#471D19] hover:bg-[#3a1614] text-white border-none mt-2"
+                disabled={loading}
+              >
+                {loading ? (
+                  <><span className="loading loading-spinner loading-sm" /> Publicant...</>
+                ) : (
+                  'Publicar Entrada'
+                )}
+              </button>
+
             </form>
           </div>
         </div>

@@ -3,7 +3,8 @@ import {
   getBlogs,
   getBlog,
   addEntry,
-  deleteBlog
+  deleteBlog,
+  getAllCategories
 } from "../controllers/blogController.js";
 import { validateUser } from "../controllers/userController.js";
 import { authenticateToken } from '../config/authMiddleware.js';
@@ -13,6 +14,7 @@ const router = express.Router();
 
 router.get("/blog/getBlogs", getBlogs);
 router.get("/blog/getBlog/:id", getBlog);
+router.get("/blog/getAllCategories", getAllCategories)
 router.post("/validateUser", validateUser);
 
 router.post("/blog/addEntry", upload.array('images', 5), authenticateToken, addEntry);

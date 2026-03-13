@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="footer sm:footer-horizontal p-10">
         <nav>
           <h6 className="footer-title">Contacte</h6>
-          <TrucarLink className="link link-hover" text="De Dijous a Dilluns de 8:30 a 19:00"/>
+          <TrucarLink className="link link-hover" text="938 66 02 52"/>
           <MapsLink className="link link-hover" text="Carretera Barcelona, 8, 08183 Barcelona"/>
         </nav>
 

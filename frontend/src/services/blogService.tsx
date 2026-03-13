@@ -48,6 +48,16 @@ export async function getBlog(id: string) {
   }
 }
 
+export async function getCategories() {
+  try {
+    const response = await axios.get(`${API_ROUTE}/blog/getAllCategories`);
+    return response.data
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    throw new Error(`Failed to fetch categories: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}
+
 export async function addBlog(blog: FormData) {
   try {
     const response = await axios.post(`${API_ROUTE}/blog/addEntry`, blog, {
@@ -56,6 +66,7 @@ export async function addBlog(blog: FormData) {
       }
     });
     return response.data;
+    
   } catch (error) {
     console.error('Error adding blog:', error);
     if (axios.isAxiosError(error)) {

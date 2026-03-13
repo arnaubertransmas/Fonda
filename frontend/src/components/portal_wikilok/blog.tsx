@@ -61,7 +61,7 @@ const Blog = () => {
   }
 
   return (
-    <div className="bg-[#f5f1e8] py-12 px-4 pb-8">
+    <div className="min-h-screen bg-[#f5f1e8] py-12 px-4 pb-8">
       <div className="max-w-7xl mx-auto mt-5">
 
         <h1 className="text-5xl font-bold text-[#471D19] text-center mb-4">

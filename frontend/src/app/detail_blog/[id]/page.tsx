@@ -80,6 +80,13 @@ export default function BlogDetailPage({ params }: Props) {
     return null;
   }
 
+  const getWikilockEmbedUrl = (url: string): string | null => {
+    const match = url.match(/[-](\d+)$/);
+    return match 
+      ? `https://ca.wikiloc.com/wikiloc/embedv2.do?id=${match[1]}&elevation=off&images=off&maptype=H` 
+      : null;
+  };
+
   const defaultImage = "/placeholder.png";
 
   return (
@@ -90,7 +97,7 @@ export default function BlogDetailPage({ params }: Props) {
           href="/portal_wikilok"
           className="px-6 py-3 bg-[#f5f1e8] text-[#471D19] rounded-lg hover:bg-[#471D19] hover:text-white transition-all inline-block"
         >
-          ← Tornar als blogs
+          ← DESCOBRIR MÉS RUTES
         </Link>
         {isAdmin() && (
           <Link
@@ -120,83 +127,67 @@ export default function BlogDetailPage({ params }: Props) {
                   </div>
                 )}
                 <h1 className="text-4xl font-bold text-[#471D19] mb-4">{blog.name}</h1>
-                {blog.url && (
-                  <Link
-                    href={blog.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline break-all block mb-6"
-                  >
-                    🔗 {blog.url}
-                  </Link>
-                )}
                 <div className="text-gray-800 whitespace-pre-wrap break-words overflow-hidden">
                   {blog.description}
                 </div>
               </div>
 
               {/* Mapa */}
-              <div className="bg-white rounded-xl p-8">
-                <h2 className="text-2xl font-semibold text-[#471D19] mb-4">Mapa</h2>
-                <div className="w-full h-48 bg-[#f5f1e8] rounded-lg flex items-center justify-center text-gray-400">
-                  Mapa no disponible
+              {blog.url && getWikilockEmbedUrl(blog.url) && (
+                <div className="rounded-xl overflow-hidden">
+                  <iframe
+                    src={getWikilockEmbedUrl(blog.url)!}
+                    className="w-full h-[500px] border-0 block"
+                    allowFullScreen
+                  />
                 </div>
-              </div>
+              )}
 
               {/* Imatges */}
-              <div className="bg-white rounded-xl overflow-hidden">
-                {blog.images && blog.images.length > 0 ? (
-                  <div className="carousel w-full h-[400px]">
-                    {blog.images.map((image, index) => (
-                      <div
-                        key={`${blog._id}-img-${index}`}
-                        id={`slide${index + 1}`}
-                        className="carousel-item relative w-full h-[400px]"
-                      >
-                        <Image
-                          width={800}
-                          height={400}
-                          src={`http://localhost:3001/uploads/${image.split('/').pop()}`}
-                          alt={`${blog.name} - ${index + 1}`}
-                          className="w-full h-[400px] object-cover"
-                          unoptimized
-                          onError={(e) => { e.currentTarget.src = defaultImage; }}
-                        />
-                        {blog.images!.length > 1 && (
-                          <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                document
-                                  .getElementById(`slide${index === 0 ? blog.images!.length : index}`)
-                                  ?.scrollIntoView({ behavior: 'instant', block: 'nearest' });
-                              }}
-                              className="btn btn-circle"
-                            >❮</button>
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                document
-                                  .getElementById(`slide${index + 2 > blog.images!.length ? 1 : index + 2}`)
-                                  ?.scrollIntoView({ behavior: 'instant', block: 'nearest' });
-                              }}
-                              className="btn btn-circle"
-                            >❯</button>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="relative w-full h-[400px] bg-gray-200">
-                    <Image
-                      src={defaultImage}
-                      alt={blog.name}
-                      width={800}
-                      height={400}
-                      className="w-full h-full object-cover"
-                      unoptimized
-                    />
+              <div className="rounded-xl overflow-hidden">
+                {/* Imatges */}
+                {blog.images && blog.images.length > 0 && (
+                  <div className="rounded-xl overflow-hidden">
+                    <div className="carousel w-full h-[400px]">
+                      {blog.images.map((image, index) => (
+                        <div
+                          key={`${blog._id}-img-${index}`}
+                          id={`slide${index + 1}`}
+                          className="carousel-item relative w-full h-[400px]"
+                        >
+                          <Image
+                            fill
+                            src={`http://localhost:3001/uploads/${image.split('/').pop()}`}
+                            alt={`${blog.name} - ${index + 1}`}
+                            className="object-cover"
+                            unoptimized
+                            onError={(e) => { e.currentTarget.src = defaultImage; }}
+                          />
+                          {blog.images!.length > 1 && (
+                            <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  document
+                                    .getElementById(`slide${index === 0 ? blog.images!.length : index}`)
+                                    ?.scrollIntoView({ behavior: 'instant', block: 'nearest' });
+                                }}
+                                className="btn btn-circle"
+                              >❮</button>
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  document
+                                    .getElementById(`slide${index + 2 > blog.images!.length ? 1 : index + 2}`)
+                                    ?.scrollIntoView({ behavior: 'instant', block: 'nearest' });
+                                }}
+                                className="btn btn-circle"
+                              >❯</button>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>

@@ -6,7 +6,7 @@ const AboutUs = () => {
     <div className="min-h-screen bg-[#f5f1e8] text-fonda-black">
       <div className="hero py-8">
         <div className="hero-content flex-col text-center">
-          <div className="relative h-48 w-[700px] mx-auto">
+          <div className="relative h-48 w-full max-w-[700px] mx-auto">
             <Image 
               src="/Fonda_Safaja-14.png"
               alt="Fonda Safaja"
@@ -22,7 +22,7 @@ const AboutUs = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 pb-16 max-w-7xl space-y-20">
+      <div className="container mx-auto px-4 md:px-6 pb-16 max-w-7xl space-y-20">
         <div className="grid md:grid-cols-2 gap-8 items-stretch">
           <div className="bg-white/90 backdrop-blur-sm p-10 flex flex-col justify-center transition-all duration-300 hover:scale-[1.02]">
             <p className="text-gray-700 leading-relaxed text-justify">

@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 const collection = db.collection("blogs");
 
 const getAll = async () => {
-  const items = await collection.find({}).toArray();
+  const items = await collection.find({}).sort({ createdAt: -1 }).toArray();
   
   return items.map(item => ({
     ...item,

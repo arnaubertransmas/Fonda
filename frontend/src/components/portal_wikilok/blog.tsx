@@ -67,9 +67,9 @@ const Blog = () => {
         <h1 className="text-5xl font-bold text-[#471D19] text-center mb-4">
           Descobreix el Moianés
         </h1>
-        <p className="text-lg text-gray-600 text-center mb-10">
+        <h2 className="text-lg text-gray-600 text-center mb-10">
           blablabla que podem posar aqui
-        </p>
+        </h2>
 
         {isAdminUser && (
           <div className="flex gap-4 mb-8">
@@ -130,9 +130,9 @@ const Blog = () => {
                   </Link>
                   <div className="card-body">
                     <Link href={`/detail_blog/${blog._id}`}>
-                      <h2 className="card-title text-[#471D19] hover:text-primary cursor-pointer">
+                      <h3 className="card-title text-[#471D19] hover:text-primary cursor-pointer">
                         {blog.name}
-                      </h2>
+                      </h3>
                       <p className="text-gray-700 break-words overflow-hidden">
                         {truncateText(blog.description)}
                       </p>

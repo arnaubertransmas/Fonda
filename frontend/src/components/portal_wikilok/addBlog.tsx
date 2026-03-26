@@ -93,7 +93,7 @@ export default function AddBlog() {
               <label className="form-control w-full">
                 <div className="label">
                   <span className="label-text font-semibold text-[#471D19] flex items-center gap-2">
-                    <p className="w-4 h-4">Nom</p>
+                    <p className="w-4 h-4">Nom (h1)</p>
                   </span>
                 </div>
                 <input

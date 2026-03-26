@@ -15,16 +15,16 @@ const AboutUs = () => {
               priority
             />
           </div>
-          <p className="text-lg text-gray-600 max-w-xl mb-5">
+          <h1 className="text-lg text-gray-600 max-w-xl mb-5">
             Un restaurant familiar situat a Sant Quirze de Safaja, on combinem
             hospitalitat, cuina catalana, proximitat i autenticitat.
-          </p>
+          </h1>
         </div>
       </div>
 
       <div className="container mx-auto px-4 md:px-6 pb-16 max-w-7xl space-y-20">
         <div className="grid md:grid-cols-2 gap-8 items-stretch">
-          <div className="bg-white/90 backdrop-blur-sm p-10 flex flex-col justify-center transition-all duration-300 hover:scale-[1.02]">
+          <div className="bg-white/90 backdrop-blur-sm p-10 flex flex-col justify-center transition-all duration-300">
             <p className="text-gray-700 leading-relaxed text-justify">
               Fer que cada visita a la Fonda Safaja sigui una experiència autèntica que connecti persones a través de la tradició i el sabor de
               la &apos;cuina de la iaia&apos;.
@@ -34,7 +34,7 @@ const AboutUs = () => {
               La nostra missió és ser el lloc on les històries, els somriures i les connexions personals siguin tan memorables com els sabors de la nostra cuina.
             </p>
           </div>
-        <div className="relative w-full aspect-[4/3] overflow-hidden transition-all duration-300 hover:scale-[1.02]">
+        <div className="relative w-full aspect-[4/3] overflow-hidden transition-all duration-300">
           <Image
             src="/entrada.jpg"
             alt="Missió Fonda Safaja"
@@ -46,7 +46,7 @@ const AboutUs = () => {
       </div>
 
         <div className="grid md:grid-cols-1 gap-8 items-stretch">
-          <div className="relative min-h-[450px] rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.02]">
+          <div className="relative min-h-[450px] rounded-2xl overflow-hidden transition-all duration-300">
             <iframe 
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2977.65235417884!2d2.1495913174438397!3d41.72802000000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4c2a4529d7065%3A0xc7e142aa1b5d12f3!2sFonda%20Safaja!5e0!3m2!1sen!2ses!4v1772033766499!5m2!1sen!2ses" 
               width="100%" 

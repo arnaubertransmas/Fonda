@@ -18,9 +18,9 @@ const Hero = () => {
               />
           </div>
           <div className="w-full lg:w-2/3 flex items-start flex-col">
-            <p className="text-lg text-gray-700 leading-relaxed italic">
+            <h2 className="text-lg text-gray-700 leading-relaxed italic">
               &quot;A la taula i al llit, al primer crit!&quot;
-            </p>
+            </h2>
             <TrucarLink 
               className="btn text-black border-black mt-4" 
               style={{ backgroundColor: "transparent" }} 
@@ -42,9 +42,9 @@ const Hero = () => {
             />
           </div>
           <div className="w-full lg:w-2/3 flex flex-col items-end mr-5">
-            <p className="text-lg text-gray-700 leading-relaxed italic">
+            <h2 className="text-lg text-gray-700 leading-relaxed italic">
               Preservem l’esperit de sempre perquè cada generació s’hi trobi com a casa
-            </p>
+            </h2>
             <MapsLink 
               className="btn text-black border-black mt-4" 
               style={{ backgroundColor: "transparent" }}
@@ -67,9 +67,9 @@ const Hero = () => {
             />
           </div>
           <div className="w-full lg:w-2/3 flex flex-col items-start">
-            <p className="text-lg text-gray-700 leading-relaxed">
+            <h1 className="text-lg text-gray-700 leading-relaxed">
               Un espai per gaudir sense presses: cuina de records, tracte proper i connexions reals.       
-            </p>
+            </h1>
              <Link
               href="about_us"
               className="btn text-black border-black mt-4"

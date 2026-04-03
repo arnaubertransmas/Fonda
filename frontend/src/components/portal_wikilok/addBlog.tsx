@@ -4,6 +4,25 @@ import { useRouter } from 'next/navigation';
 import { Upload, Mountain } from 'lucide-react';
 import { addBlog } from '@/services/blogService';
 import { CATEGORIES_SELECT } from '@/utils/category_labels';
+import { quill_styles_add } from '@/utils/quill_styles';
+import dynamic from 'next/dynamic';
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
+import 'react-quill-new/dist/quill.snow.css';
+
+const quillModules = {
+  toolbar: [
+    [{ header: [false, 2, 3] }],
+    ['bold', 'italic', 'underline'],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    ['link'],
+    ['clean'],
+  ],
+};
+
+const quillFormats = [
+  'header', 'bold', 'italic', 'underline',
+  'list', 'link',
+];
 
 export default function AddBlog() {
   const router = useRouter();
@@ -22,6 +41,10 @@ export default function AddBlog() {
   ) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleDescriptionChange = (value: string) => {
+    setFormData(prev => ({ ...prev, description: value }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,8 +71,7 @@ export default function AddBlog() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    if (!formData.category) return
+    if (!formData.category) return;
     setLoading(true);
 
     try {
@@ -62,7 +84,6 @@ export default function AddBlog() {
 
       await addBlog(form);
       router.push('/portal_wikilok');
-
     } catch (error) {
       console.error('Error al crear el blog:', error);
     } finally {
@@ -72,6 +93,8 @@ export default function AddBlog() {
 
   return (
     <div className="min-h-screen bg-[#f5f1e8] flex items-start justify-center pt-6 pb-12 px-4">
+      <style>{quill_styles_add}</style>
+
       <div className="w-full max-w-2xl">
 
         {/* Header */}
@@ -89,12 +112,10 @@ export default function AddBlog() {
           <div className="card-body p-8 gap-6">
             <form onSubmit={handleSubmit} className="flex flex-col gap-6">
 
-              {/* Nom de la ruta */}
+              {/* Nom */}
               <label className="form-control w-full">
                 <div className="label">
-                  <span className="label-text font-semibold text-[#471D19] flex items-center gap-2">
-                    <p className="w-4 h-4">Nom (h1)</p>
-                  </span>
+                  <span className="label-text font-semibold text-[#471D19]">Nom</span>
                 </div>
                 <input
                   type="text"
@@ -107,29 +128,30 @@ export default function AddBlog() {
                 />
               </label>
 
-              {/* Descripció */}
-              <label className="form-control w-full">
+              {/* Descripció amb Quill */}
+              <div className="form-control w-full">
                 <div className="label">
-                  <span className="label-text font-semibold text-[#471D19] flex items-center gap-2">
-                    <p className="w-4 h-4">Descripció</p>
-                  </span>
+                  <span className="label-text font-semibold text-[#471D19]">Descripció</span>
                 </div>
-                <textarea
-                  name="description"
-                  placeholder="Descripció"
-                  className="textarea textarea-bordered h-32 w-full resize-none focus:border-[#471D19] focus:outline-none"
-                  value={formData.description}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
+                <div className="rounded-lg overflow-hidden">
+                  <ReactQuill
+                    theme="snow"
+                    value={formData.description}
+                    onChange={handleDescriptionChange}
+                    modules={quillModules}
+                    formats={quillFormats}
+                    placeholder="Escriu la descripció aquí..."
+                  />
+                </div>
+                <p className="text-xs text-gray-400 mt-1">
+                  Usa el desplegable per escollir: <strong>Paràgraf</strong>, <strong>Títol (H2)</strong> o <strong>Subtítol (H3)</strong>.
+                </p>
+              </div>
 
               {/* Categoria */}
               <label className="form-control w-full">
                 <div className="label">
-                  <span className="label-text font-semibold text-[#471D19] flex items-center gap-2">
-                    <p className="w-4 h-4">Categoria</p>
-                  </span>
+                  <span className="label-text font-semibold text-[#471D19]">Categoria</span>
                 </div>
                 <select
                   name="category"
@@ -149,9 +171,7 @@ export default function AddBlog() {
               {/* URL Wikiloc */}
               <label className="form-control w-full">
                 <div className="label">
-                  <span className="label-text font-semibold text-[#471D19] flex items-center gap-2">
-                    <p className="w-4 h-4">Enllaç Wikiloc</p> 
-                  </span>
+                  <span className="label-text font-semibold text-[#471D19]">Enllaç Wikiloc</span>
                 </div>
                 <input
                   type="url"
@@ -167,11 +187,8 @@ export default function AddBlog() {
               {/* Imatges */}
               <div className="form-control w-full">
                 <div className="label">
-                  <span className="label-text font-semibold text-[#471D19] flex items-center gap-2">
-                    <p className="w-4 h-4">Imatges</p>
-                  </span>
+                  <span className="label-text font-semibold text-[#471D19]">Imatges</span>
                 </div>
-
                 <div
                   className={`relative border-2 border-dashed rounded-2xl p-8 transition-all cursor-pointer text-center ${
                     dragActive

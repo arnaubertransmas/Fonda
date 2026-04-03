@@ -22,15 +22,12 @@ const Blog = () => {
     setIsAdminUser(isAdmin());
     const fetchBlogs = async () => {
       try {
-
         const [data, cats] = await Promise.all([
           getBlogs(),
           getCategories(),
         ]);
-
         setBlogs(data);
         setAvailableCategories(cats.filter(Boolean));
-
       } catch (error) {
         console.error("❌ Error carregant blogs:", error);
       } finally {
@@ -40,8 +37,15 @@ const Blog = () => {
     fetchBlogs();
   }, []);
 
-  const truncateText = (text: string, maxLength = 50) =>
-    text.length <= maxLength ? text : text.substring(0, maxLength) + '...';
+  const truncateText = (text: string, maxLength = 100) => {
+    const firstBlock = text.split(/<\/(p|h[1-6]|li)>/i)[0];
+    const withoutTags = firstBlock.replace(/<[^>]*>/g, '');
+    const decoded = typeof document !== 'undefined'
+      ? new DOMParser().parseFromString(withoutTags, 'text/html').body.textContent ?? ''
+      : withoutTags.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&apos;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+    const plain = decoded.replace(/\s+/g, ' ').trim();
+    return plain.length <= maxLength ? plain : plain.substring(0, maxLength) + '...';
+  };
 
   const handleLogout = () => {
     logout();
@@ -101,8 +105,7 @@ const Blog = () => {
                     : 'btn-outline border-[#471D19] text-[#471D19]'
                 }`}
               >
-                {/* mapejo el label amb value */}
-                {CATEGORY_LABELS[cat] ?? cat} 
+                {CATEGORY_LABELS[cat] ?? cat}
               </Link>
             ))}
           </div>

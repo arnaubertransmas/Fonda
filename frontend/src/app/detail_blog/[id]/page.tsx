@@ -11,13 +11,13 @@ import { getCookie } from "@/config/axiosConfig";
 import BlogInterface from "@/interfaces/blogInterface";
 import { TrucarLink, MapsLink } from "@/utils/links";
 import { CATEGORY_LABELS } from "@/utils/category_labels";
+import { quill_styles_detail } from "@/utils/quill_styles";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
 const isAdmin = (): boolean => getCookie('admin') === 'true';
-
 const eliminarBlog = async (id: string) => {
   try {
     await deleteBlog(id);
@@ -26,13 +26,78 @@ const eliminarBlog = async (id: string) => {
   }
 };
 
+function truncateHtml(html: string, maxChars: number): string {
+  if (typeof document === "undefined") {
+    let visibleCount = 0;
+    let i = 0;
+    while (i < html.length && visibleCount < maxChars) {
+      if (html[i] === "<") {
+        while (i < html.length && html[i] !== ">") i++;
+      } else if (html[i] === "&") {
+        while (i < html.length && html[i] !== ";") i++;
+        visibleCount++;
+      } else {
+        visibleCount++;
+      }
+      i++;
+    }
+    return html.slice(0, i);
+  }
+
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  const fullText = div.textContent || div.innerText || "";
+  if (fullText.length <= maxChars) return html;
+
+  let remaining = maxChars;
+
+  function truncateNode(node: Node): boolean {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const text = node.textContent || "";
+      if (text.length <= remaining) {
+        remaining -= text.length;
+        return false;
+      } else {
+        node.textContent = text.slice(0, remaining);
+        remaining = 0;
+        return true;
+      }
+    }
+    const children = Array.from(node.childNodes);
+    for (const child of children) {
+      const done = truncateNode(child);
+      if (done) {
+        let next = child.nextSibling;
+        while (next) {
+          const toRemove = next;
+          next = next.nextSibling;
+          node.removeChild(toRemove);
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+
+  truncateNode(div);
+  return div.innerHTML;
+}
+
+function getPlainTextLength(html: string): number {
+  if (typeof document === "undefined") return html.replace(/<[^>]*>/g, "").length;
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  return (div.textContent || div.innerText || "").length;
+}
+
 export default function BlogDetailPage({ params }: Props) {
   const [blog, setBlog] = useState<BlogInterface | null>(null);
   const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
-    const loadBlog = async () => {  
+    const loadBlog = async () => {
       try {
         const { id: blogId } = await params;
 
@@ -41,7 +106,6 @@ export default function BlogDetailPage({ params }: Props) {
           return;
         }
 
-        // Carreguem el blog i totes les categories disponibles en paral·lel
         const [blogData, cats] = await Promise.all([
           getBlog(blogId),
           getCategories(),
@@ -54,9 +118,10 @@ export default function BlogDetailPage({ params }: Props) {
 
         setBlog(blogData);
         setAvailableCategories(cats.filter(Boolean));
+        // console.log('descripció:', blogData.description); // ← blogData, no blog
+
 
       } catch (error) {
-
         console.error("Error carregant blog:", error);
         notFound();
       } finally {
@@ -82,16 +147,25 @@ export default function BlogDetailPage({ params }: Props) {
 
   const getWikilockEmbedUrl = (url: string): string | null => {
     const match = url.match(/[-](\d+)$/);
-    return match 
-      ? `https://ca.wikiloc.com/wikiloc/embedv2.do?id=${match[1]}&elevation=off&images=off&maptype=H` 
+    return match
+      ? `https://ca.wikiloc.com/wikiloc/embedv2.do?id=${match[1]}&elevation=off&images=off&maptype=H`
       : null;
   };
 
   const defaultImage = "/placeholder.png";
+  const CHAR_LIMIT = 600;
+  const fullHtml = (blog.description ?? "").replace(/&nbsp;/g, " ");  
+  const isLong = getPlainTextLength(fullHtml) > CHAR_LIMIT;
+  const displayedHtml = isLong && !expanded
+    ? truncateHtml(fullHtml, CHAR_LIMIT)
+    : fullHtml;
 
   return (
     <>
       <Header />
+
+      <style>{quill_styles_detail}</style>
+
       <div className="mt-6 flex gap-4 px-6 lg:px-16 xl:px-24">
         <Link
           href="/portal_wikilok"
@@ -103,7 +177,7 @@ export default function BlogDetailPage({ params }: Props) {
           <Link
             href="/portal_wikilok"
             onClick={() => eliminarBlog(blog._id)}
-            className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all inline-block"
+            className="px-6 py-3 btn-outline rounded-lg transition-all inline-block"
           >
             Eliminar blog
           </Link>
@@ -113,11 +187,8 @@ export default function BlogDetailPage({ params }: Props) {
       <div className="bg-[#f5f1e8] py-10 px-6 lg:px-16 xl:px-24 mt-4 pb-12">
         <div className="max-w-screen-xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
             {/* ── COLUMNA ESQUERRA (2/3) ── */}
-            <div className="lg:col-span-2 flex flex-col gap-6">
-
-              {/* Títol + Descripció */}
+            <div className="lg:col-span-2 flex flex-col gap-6 min-w-0">
               <div className="bg-white rounded-xl p-8">
                 {blog.category && (
                   <div className="mb-4">
@@ -126,10 +197,21 @@ export default function BlogDetailPage({ params }: Props) {
                     </span>
                   </div>
                 )}
-                <h1 className="text-4xl font-bold text-[#471D19] mb-4">{blog.name}</h1>
-                <div className="text-gray-800 whitespace-pre-wrap break-words overflow-hidden">
-                  {blog.description}
-                </div>
+                <h1 className="text-4xl font-bold text-[#471D19] mb-6">{blog.name}</h1>
+
+                <div
+                  className="blog-content"
+                  dangerouslySetInnerHTML={{ __html: displayedHtml }}
+                />
+
+                {isLong && (
+                  <button
+                    onClick={() => setExpanded(!expanded)}
+                    className="mt-4 px-5 py-2 rounded-lg border border-[#471D19] text-[#471D19] hover:bg-[#471D19] hover:text-white transition-all text-sm font-medium"
+                  >
+                    {expanded ? "↑ Llegir menys" : "↓ Llegir més"}
+                  </button>
+                )}
               </div>
 
               {/* Mapa */}
@@ -144,53 +226,50 @@ export default function BlogDetailPage({ params }: Props) {
               )}
 
               {/* Imatges */}
-              <div className="rounded-xl overflow-hidden">
-                {/* Imatges */}
-                {blog.images && blog.images.length > 0 && (
-                  <div className="rounded-xl overflow-hidden">
-                    <div className="carousel w-full h-[400px]">
-                      {blog.images.map((image, index) => (
-                        <div
-                          key={`${blog._id}-img-${index}`}
-                          id={`slide${index + 1}`}
-                          className="carousel-item relative w-full h-[400px]"
-                        >
-                          <Image
-                            fill
-                            src={`http://localhost:3001/uploads/${image.split('/').pop()}`}
-                            alt={`${blog.name} - ${index + 1}`}
-                            className="object-cover"
-                            unoptimized
-                            onError={(e) => { e.currentTarget.src = defaultImage; }}
-                          />
-                          {blog.images!.length > 1 && (
-                            <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-                              <button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  document
-                                    .getElementById(`slide${index === 0 ? blog.images!.length : index}`)
-                                    ?.scrollIntoView({ behavior: 'instant', block: 'nearest' });
-                                }}
-                                className="btn btn-circle"
-                              >❮</button>
-                              <button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  document
-                                    .getElementById(`slide${index + 2 > blog.images!.length ? 1 : index + 2}`)
-                                    ?.scrollIntoView({ behavior: 'instant', block: 'nearest' });
-                                }}
-                                className="btn btn-circle"
-                              >❯</button>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
+              {blog.images && blog.images.length > 0 && (
+                <div className="rounded-xl overflow-hidden">
+                  <div className="carousel w-full h-[400px]">
+                    {blog.images.map((image, index) => (
+                      <div
+                        key={`${blog._id}-img-${index}`}
+                        id={`slide${index + 1}`}
+                        className="carousel-item relative w-full h-[400px]"
+                      >
+                        <Image
+                          fill
+                          src={`http://localhost:3001/uploads/${image.split('/').pop()}`}
+                          alt={`${blog.name} - ${index + 1}`}
+                          className="object-cover"
+                          unoptimized
+                          onError={(e) => { e.currentTarget.src = defaultImage; }}
+                        />
+                        {blog.images!.length > 1 && (
+                          <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                document
+                                  .getElementById(`slide${index === 0 ? blog.images!.length : index}`)
+                                  ?.scrollIntoView({ behavior: 'instant', block: 'nearest' });
+                              }}
+                              className="btn btn-circle"
+                            >❮</button>
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                document
+                                  .getElementById(`slide${index + 2 > blog.images!.length ? 1 : index + 2}`)
+                                  ?.scrollIntoView({ behavior: 'instant', block: 'nearest' });
+                              }}
+                              className="btn btn-circle"
+                            >❯</button>
+                          </div>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
             {/* ── COLUMNA DRETA (1/3) ── */}

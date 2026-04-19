@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -10,11 +10,11 @@ import { getBlogs, getCategories } from "@/services/blogService";
 
 const isAdmin = (): boolean => getCookie('admin') === 'true';
 
-const Blog = () => {
+const BlogContent = () => {
   const [blogs, setBlogs] = useState<BlogInterface[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isAdminUser, setIsAdminUser] = useState(false)
-  const [availableCategories, setAvailableCategories] = useState<string[]>([]);;
+  const [isAdminUser, setIsAdminUser] = useState(false);
+  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const searchParams = useSearchParams();
   const activeCategory = searchParams.get('category') || '';
 
@@ -67,7 +67,6 @@ const Blog = () => {
   return (
     <div className="min-h-screen bg-[#f5f1e8] py-12 px-4 pb-8">
       <div className="max-w-7xl mx-auto mt-5">
-
         <h1 className="text-5xl font-bold text-[#471D19] text-center mb-4">
           Descobreix el Moianés
         </h1>
@@ -82,16 +81,11 @@ const Blog = () => {
           </div>
         )}
 
-        {/* Filtre de categories */}
         {availableCategories.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-8">
             <Link
               href="/portal_wikilok"
-              className={`btn btn-sm ${
-                !activeCategory
-                  ? 'bg-[#471D19] text-white border-none'
-                  : 'btn-outline border-[#471D19] text-[#471D19]'
-              }`}
+              className={`btn btn-sm ${!activeCategory ? 'bg-[#471D19] text-white border-none' : 'btn-outline border-[#471D19] text-[#471D19]'}`}
             >
               Totes
             </Link>
@@ -99,11 +93,7 @@ const Blog = () => {
               <Link
                 key={cat}
                 href={`/portal_wikilok?category=${cat}`}
-                className={`btn btn-sm ${
-                  activeCategory === cat
-                    ? 'bg-[#471D19] text-white border-none'
-                    : 'btn-outline border-[#471D19] text-[#471D19]'
-                }`}
+                className={`btn btn-sm ${activeCategory === cat ? 'bg-[#471D19] text-white border-none' : 'btn-outline border-[#471D19] text-[#471D19]'}`}
               >
                 {CATEGORY_LABELS[cat] ?? cat}
               </Link>
@@ -173,6 +163,18 @@ const Blog = () => {
         )}
       </div>
     </div>
+  );
+};
+
+const Blog = () => {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen bg-[#f5f1e8]">
+        <span className="loading loading-spinner loading-lg" />
+      </div>
+    }>
+      <BlogContent />
+    </Suspense>
   );
 };
 

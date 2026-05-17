@@ -16,7 +16,7 @@ const isAdmin = (): boolean => getCookie("admin") === "true";
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
-const BlogContent = () => {
+export default function BlogClient() {
   const [blogs, setBlogs] = useState<BlogInterface[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdminUser, setIsAdminUser] = useState(false);
@@ -149,9 +149,7 @@ const BlogContent = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredBlogs.map((blog) => {
               const imageSrc = blog.images?.[0]
-                ? `${API_URL}/uploads/${
-                    blog.images[0].split("/").pop()
-                  }`
+                ? `${API_URL}/uploads/${blog.images[0].split("/").pop()}`
                 : "/placeholder.png";
 
               return (
@@ -177,7 +175,7 @@ const BlogContent = () => {
                         {blog.name}
                       </h3>
 
-                      <p className="text-gray-700 break-words overflow-hidden">
+                      <p className="text-gray-700">
                         {truncateText(blog.description)}
                       </p>
                     </Link>
@@ -188,19 +186,6 @@ const BlogContent = () => {
                           {CATEGORY_LABELS[blog.category] ??
                             blog.category}
                         </span>
-                      </div>
-                    )}
-
-                    {blog.url && (
-                      <div className="mt-3">
-                        <a
-                          href={blog.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-ghost btn-xs"
-                        >
-                          Veure a Wikiloc
-                        </a>
                       </div>
                     )}
                   </div>
@@ -218,6 +203,4 @@ const BlogContent = () => {
       </div>
     </div>
   );
-};
-
-export default BlogContent;
+}

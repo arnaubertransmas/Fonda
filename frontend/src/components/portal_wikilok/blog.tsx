@@ -1,31 +1,42 @@
 "use client";
-import React, { useEffect, useState, Suspense } from "react";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+
 import { logout, getCookie } from "../../config/axiosConfig";
+
 import BlogInterface from "@/interfaces/blogInterface";
 import { CATEGORY_LABELS } from "@/utils/category_labels";
 import { getBlogs, getCategories } from "@/services/blogService";
 
-const isAdmin = (): boolean => getCookie('admin') === 'true';
+const isAdmin = (): boolean => getCookie("admin") === "true";
+
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 const BlogContent = () => {
   const [blogs, setBlogs] = useState<BlogInterface[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdminUser, setIsAdminUser] = useState(false);
-  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
+  const [availableCategories, setAvailableCategories] = useState<string[]>(
+    []
+  );
+
   const searchParams = useSearchParams();
-  const activeCategory = searchParams.get('category') || '';
+  const activeCategory = searchParams.get("category") || "";
 
   useEffect(() => {
     setIsAdminUser(isAdmin());
+
     const fetchBlogs = async () => {
       try {
         const [data, cats] = await Promise.all([
           getBlogs(),
           getCategories(),
         ]);
+
         setBlogs(data);
         setAvailableCategories(cats.filter(Boolean));
       } catch (error) {
@@ -34,17 +45,32 @@ const BlogContent = () => {
         setLoading(false);
       }
     };
+
     fetchBlogs();
   }, []);
 
   const truncateText = (text: string, maxLength = 100) => {
     const firstBlock = text.split(/<\/(p|h[1-6]|li)>/i)[0];
-    const withoutTags = firstBlock.replace(/<[^>]*>/g, '');
-    const decoded = typeof document !== 'undefined'
-      ? new DOMParser().parseFromString(withoutTags, 'text/html').body.textContent ?? ''
-      : withoutTags.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&apos;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-    const plain = decoded.replace(/\s+/g, ' ').trim();
-    return plain.length <= maxLength ? plain : plain.substring(0, maxLength) + '...';
+
+    const withoutTags = firstBlock.replace(/<[^>]*>/g, "");
+
+    const decoded =
+      typeof document !== "undefined"
+        ? new DOMParser().parseFromString(withoutTags, "text/html").body
+            .textContent ?? ""
+        : withoutTags
+            .replace(/&nbsp;/g, " ")
+            .replace(/&amp;/g, "&")
+            .replace(/&apos;/g, "'")
+            .replace(/&quot;/g, '"')
+            .replace(/&lt;/g, "<")
+            .replace(/&gt;/g, ">");
+
+    const plain = decoded.replace(/\s+/g, " ").trim();
+
+    return plain.length <= maxLength
+      ? plain
+      : plain.substring(0, maxLength) + "...";
   };
 
   const handleLogout = () => {
@@ -53,7 +79,7 @@ const BlogContent = () => {
   };
 
   const filteredBlogs = activeCategory
-    ? blogs.filter(b => b.category === activeCategory)
+    ? blogs.filter((b) => b.category === activeCategory)
     : blogs;
 
   if (loading) {
@@ -70,14 +96,23 @@ const BlogContent = () => {
         <h1 className="text-5xl font-bold text-[#471D19] text-center mb-4">
           Descobreix el Moianés
         </h1>
+
         <h2 className="text-lg text-gray-600 text-center mb-10">
           blablabla que podem posar aqui
         </h2>
 
         {isAdminUser && (
           <div className="flex gap-4 mb-8">
-            <Link href="/add-blog" className="btn btn-primary">Afegir blog</Link>
-            <button onClick={handleLogout} className="btn btn-outline">Logout</button>
+            <Link href="/add-blog" className="btn btn-primary">
+              Afegir blog
+            </Link>
+
+            <button
+              onClick={handleLogout}
+              className="btn btn-outline"
+            >
+              Logout
+            </button>
           </div>
         )}
 
@@ -85,15 +120,24 @@ const BlogContent = () => {
           <div className="flex flex-wrap gap-2 mb-8">
             <Link
               href="/portal_wikilok"
-              className={`btn btn-sm ${!activeCategory ? 'bg-[#471D19] text-white border-none' : 'btn-outline border-[#471D19] text-[#471D19]'}`}
+              className={`btn btn-sm ${
+                !activeCategory
+                  ? "bg-[#471D19] text-white border-none"
+                  : "btn-outline border-[#471D19] text-[#471D19]"
+              }`}
             >
               Totes
             </Link>
-            {availableCategories.map(cat => (
+
+            {availableCategories.map((cat) => (
               <Link
                 key={cat}
                 href={`/portal_wikilok?category=${cat}`}
-                className={`btn btn-sm ${activeCategory === cat ? 'bg-[#471D19] text-white border-none' : 'btn-outline border-[#471D19] text-[#471D19]'}`}
+                className={`btn btn-sm ${
+                  activeCategory === cat
+                    ? "bg-[#471D19] text-white border-none"
+                    : "btn-outline border-[#471D19] text-[#471D19]"
+                }`}
               >
                 {CATEGORY_LABELS[cat] ?? cat}
               </Link>
@@ -105,11 +149,16 @@ const BlogContent = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredBlogs.map((blog) => {
               const imageSrc = blog.images?.[0]
-                ? `http://localhost:3001/uploads/${blog.images[0].split("/").pop()}`
+                ? `${API_URL}/uploads/${
+                    blog.images[0].split("/").pop()
+                  }`
                 : "/placeholder.png";
 
               return (
-                <div key={blog._id} className="card bg-base-100 transition-all hover:scale-[1.02]">
+                <div
+                  key={blog._id}
+                  className="card bg-base-100 transition-all hover:scale-[1.02]"
+                >
                   <Link href={`/detail_blog/${blog._id}`}>
                     <figure className="bg-gray-200 cursor-pointer">
                       <Image
@@ -121,11 +170,13 @@ const BlogContent = () => {
                       />
                     </figure>
                   </Link>
+
                   <div className="card-body">
                     <Link href={`/detail_blog/${blog._id}`}>
                       <h3 className="card-title text-[#471D19] hover:text-primary cursor-pointer">
                         {blog.name}
                       </h3>
+
                       <p className="text-gray-700 break-words overflow-hidden">
                         {truncateText(blog.description)}
                       </p>
@@ -134,7 +185,8 @@ const BlogContent = () => {
                     {blog.category && (
                       <div className="mt-2">
                         <span className="badge badge-outline text-[#471D19] border-[#471D19]">
-                          {CATEGORY_LABELS[blog.category] ?? blog.category}
+                          {CATEGORY_LABELS[blog.category] ??
+                            blog.category}
                         </span>
                       </div>
                     )}
@@ -158,7 +210,9 @@ const BlogContent = () => {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-xl text-gray-500">No hi ha blogs</p>
+            <p className="text-xl text-gray-500">
+              No hi ha blogs
+            </p>
           </div>
         )}
       </div>
@@ -166,16 +220,4 @@ const BlogContent = () => {
   );
 };
 
-const Blog = () => {
-  return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen bg-[#f5f1e8]">
-        <span className="loading loading-spinner loading-lg" />
-      </div>
-    }>
-      <BlogContent />
-    </Suspense>
-  );
-};
-
-export default Blog;
+export default BlogContent;

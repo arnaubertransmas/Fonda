@@ -1,6 +1,7 @@
 import axios, { setAuthToken } from '../config/axiosConfig';
 
 const API_ROUTE = process.env.NEXT_PUBLIC_API_ROUTE;
+console.log('🔗 API_ROUTE utilitzada:', API_ROUTE);
 
 export async function validateUser(email: string, password: string) {
   try {

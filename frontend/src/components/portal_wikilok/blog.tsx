@@ -148,9 +148,10 @@ export default function BlogClient() {
         {filteredBlogs.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredBlogs.map((blog) => {
-              const imageSrc = blog.images?.[0]
-                ? `${API_URL}/uploads/${blog.images[0].split("/").pop()}`
-                : "/placeholder.png";
+              // const imageSrc = blog.images?.[0]
+              //   ? `${API_URL}/uploads/${blog.images[0].split("/").pop()}`
+              //   : "/placeholder.png";
+              const imageSrc = blog.images?.[0] || "/placeholder.png";
 
               return (
                 <div

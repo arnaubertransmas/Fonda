@@ -75,7 +75,8 @@ const addEntry = async (req, res) => {
     console.error('Stack:', error.stack);
     res.status(500).json({ 
       error: "Failed to add item",
-      message: error.message 
+      message: error.message ,
+      stack: error.stack
     });
   }
 };

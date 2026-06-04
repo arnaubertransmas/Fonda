@@ -63,7 +63,7 @@ const addEntry = async (req, res) => {
     
     res.status(201).json(addedItem);
   } catch (error) {
-    console.error('❌ Error complet:', error);
+    console.error('❌ Error complet:', error.message);
     console.error('Stack:', error.stack);
     res.status(500).json({ 
       error: "Failed to add item",

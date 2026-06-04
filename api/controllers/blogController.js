@@ -5,6 +5,13 @@ import {
   addItem,
   deleteItem
 } from "../models/blogModel.js";
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const getBlogs = async (req, res) => {
   try {
@@ -19,46 +26,48 @@ const getBlog = async (req, res) => {
   try {
     const { id } = req.params;
     const item = await getById(id);
-
     if (!item) {
       return res.status(404).json({ error: "Item not found" });
     }
-
     res.json(item);
   } catch (error) {
     res.status(500).json({ error: "Failed to retrieve item" });
   }
 };
 
-const getAllCategories = async(req, res) => {
+const getAllCategories = async (req, res) => {
   try {
-    const categories = await getCategories()
-    return res.json(categories)
-    
+    const categories = await getCategories();
+    return res.json(categories);
   } catch (error) {
-    res.status(500).json({'error': "Failded to retrieve categories"})
+    res.status(500).json({ error: "Failed to retrieve categories" });
   }
-}
+};
 
 const addEntry = async (req, res) => {
-  console.log('CLOUDINARY CONFIG:', {
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY ? 'EXISTS' : 'MISSING',
-    api_secret: process.env.CLOUDINARY_API_SECRET ? 'EXISTS' : 'MISSING',
-  });
-  console.log('FILES:', req.files);
-  console.log('BODY:', req.body);
-  // ... resta del codi
   try {
-
     const VALID_CATEGORIES = ['senderisme', 'btt', 'ciclisme', 'running', 'altres'];
-    // const imagePaths = req.files ? req.files.map(file => file.path) : [];
-    const imagePaths = [];
 
-    
     if (!VALID_CATEGORIES.includes(req.body.category)) {
       return res.status(400).json({ error: 'Categoria no vàlida' });
-  }
+    }
+
+    const imagePaths = [];
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        const result = await new Promise((resolve, reject) => {
+          cloudinary.uploader.upload_stream(
+            { folder: 'fonda' },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result);
+            }
+          ).end(file.buffer);
+        });
+        imagePaths.push(result.secure_url);
+      }
+    }
+
     const blogData = {
       name: req.body.name,
       description: req.body.description,
@@ -67,18 +76,15 @@ const addEntry = async (req, res) => {
       images: imagePaths,
       createdAt: new Date()
     };
-    
+
     const addedItem = await addItem(blogData);
-    // console.log(addedItem)
-    
     res.status(201).json(addedItem);
+
   } catch (error) {
-    console.error('❌ Error complet:', error.message);
-    console.error('Stack:', error.stack);
-    res.status(500).json({ 
+    console.error('❌ Error:', error.message);
+    res.status(500).json({
       error: "Failed to add item",
-      message: error.message ,
-      stack: error.stack
+      message: error.message
     });
   }
 };
@@ -86,23 +92,19 @@ const addEntry = async (req, res) => {
 const deleteBlog = async (req, res) => {
   try {
     const { id } = req.params;
-    
     const deleted = await deleteItem(id);
-
     if (deleted) {
       res.status(200).json({ message: "Blog eliminat correctament", success: true });
     } else {
       res.status(404).json({ error: "Blog no trobat" });
     }
-    
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ 
+    res.status(500).json({
       error: "Failed to delete blog",
-      message: error.message 
+      message: error.message
     });
   }
-}
+};
 
 export {
   getBlogs,

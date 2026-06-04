@@ -52,7 +52,9 @@ const addEntry = async (req, res) => {
   try {
 
     const VALID_CATEGORIES = ['senderisme', 'btt', 'ciclisme', 'running', 'altres'];
-    const imagePaths = req.files ? req.files.map(file => file.path) : [];
+    // const imagePaths = req.files ? req.files.map(file => file.path) : [];
+    const imagePaths = [];
+
     
     if (!VALID_CATEGORIES.includes(req.body.category)) {
       return res.status(400).json({ error: 'Categoria no vàlida' });

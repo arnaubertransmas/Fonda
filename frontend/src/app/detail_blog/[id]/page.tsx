@@ -237,7 +237,7 @@ export default function BlogDetailPage({ params }: Props) {
                       >
                         <Image
                           fill
-                          src={`http://localhost:3001/uploads/${image.split('/').pop()}`}
+                          src={image}
                           alt={`${blog.name} - ${index + 1}`}
                           className="object-cover"
                           unoptimized

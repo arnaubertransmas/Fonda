@@ -1,27 +1,16 @@
+import React from "react";
 import { TrucarLink } from "@/utils/links";
-import React, { useEffect, useRef } from "react";
 
 const Allotjament = () => {
-
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {});
-    }
-  }, []);
-
   return (
     <div className="min-h-screen bg-[#f5f1e8] text-fonda-black">
 
       <div className="relative w-full h-[70vh]">
         <video
           src="/57.mp4"
-          ref={videoRef}
           autoPlay
           loop
           muted
-          playsInline
           className="object-cover w-full h-full"
         />
       </div>

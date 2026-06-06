@@ -174,13 +174,15 @@ export default function BlogDetailPage({ params }: Props) {
           ← DESCOBRIR MÉS RUTES
         </Link>
         {isAdmin() && (
-          <Link
-            href="/portal_wikilok"
-            onClick={() => eliminarBlog(blog._id)}
+          <button
+            onClick={async () => {
+              await eliminarBlog(blog._id);
+              window.location.href = "/portal_wikilok";
+            }}
             className="px-6 py-3 btn-outline rounded-lg transition-all inline-block"
           >
             Eliminar blog
-          </Link>
+          </button>
         )}
       </div>
 

@@ -11,6 +11,7 @@ const Allotjament = () => {
           autoPlay
           loop
           muted
+          playsInline
           className="object-cover w-full h-full"
         />
       </div>

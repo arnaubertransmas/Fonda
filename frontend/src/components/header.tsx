@@ -110,7 +110,7 @@ const Header = () => {
       </div>
 
       {/* Spacer */}
-      <div className="h-[180px] md:h-[180px] h-[70px]"></div>
+      <div className="h-[70px] md:h-[180px]"></div>
     </>
   );
 };

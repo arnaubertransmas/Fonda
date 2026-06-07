@@ -7,7 +7,7 @@ const Allotjament = () => {
 
       <div className="relative w-full h-[70vh]">
         <video
-          src="/57.mp4"
+          src="/5.mp4"
           autoPlay
           loop
           playsInline

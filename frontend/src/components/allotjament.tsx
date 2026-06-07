@@ -5,14 +5,16 @@ const Allotjament = () => {
   return (
     <div className="min-h-screen bg-[#f5f1e8] text-fonda-black">
 
-      <div className="relative w-full h-[70vh]">
+      <div className="relative w-full h-[70vh] overflow-hidden">
         <video
-          src="/5.mp4"
+          src="/57.mp4"
           autoPlay
           loop
-          playsInline
           muted
-          className="object-cover w-full h-full"
+          playsInline
+          disablePictureInPicture
+          controlsList="nodownload nofullscreen noremoteplayback"
+          className="object-cover w-full h-full pointer-events-none"
         />
       </div>
 
@@ -28,7 +30,6 @@ const Allotjament = () => {
           Truca&apos;ns i t&apos;explicarem disponibilitat, opcions i la millor
           proposta segons el teu pla.
         </p>
-        
 
         <div className="flex justify-center mt-4">
           <TrucarLink

@@ -43,13 +43,13 @@ const Header = () => {
       >
         {/* Desktop */}
         <div className="hidden md:flex flex-col items-center gap-4 py-6">
-          <Link href="/">
+          <Link href="/" className="block w-[100px] h-[100px]">
             <Image
               src="/favicon.ico"
               alt="Fonda Safaja"
               width={100}
               height={100}
-              className="object-contain"
+              className="object-contain w-full h-full"
             />
           </Link>
           <ul className="menu menu-horizontal px-1 gap-6">
@@ -63,13 +63,13 @@ const Header = () => {
 
         {/* Mobile */}
         <div className="md:hidden flex items-center justify-between px-4 py-3">
-          <Link href="/">
+          <Link href="/" className="block w-[60px] h-[60px] relative z-50">
             <Image
               src="/favicon.ico"
               alt="Fonda Safaja"
-              width={100}
-              height={100}
-              className="object-contain"
+              width={60}
+              height={60}
+              className="object-contain w-full h-full"
             />
           </Link>
           <button
@@ -110,7 +110,7 @@ const Header = () => {
       </div>
 
       {/* Spacer */}
-      <div className="h-[70px] md:h-[180px]"></div>
+      <div className="h-[84px] md:h-[180px]"></div>
     </>
   );
 };

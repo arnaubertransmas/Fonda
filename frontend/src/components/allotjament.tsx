@@ -10,6 +10,7 @@ const Allotjament = () => {
           src="/57.mp4"
           autoPlay
           loop
+          playsInline
           muted
           className="object-cover w-full h-full"
         />

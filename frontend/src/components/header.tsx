@@ -43,13 +43,15 @@ const Header = () => {
       >
         {/* Desktop */}
         <div className="hidden md:flex flex-col items-center gap-4 py-6">
-          <Image
-            src="/favicon.ico"
-            alt="Fonda Safaja"
-            width={100}
-            height={100}
-            className="object-contain"
-          />
+          <Link href="/">
+            <Image
+              src="/favicon.ico"
+              alt="Fonda Safaja"
+              width={100}
+              height={100}
+              className="object-contain"
+            />
+          </Link>
           <ul className="menu menu-horizontal px-1 gap-6">
             {links.map(({ href, label }) => (
               <li key={href}>
@@ -61,13 +63,15 @@ const Header = () => {
 
         {/* Mobile */}
         <div className="md:hidden flex items-center justify-between px-4 py-3">
-          <Image
-            src="/favicon.ico"
-            alt="Fonda Safaja"
-            width={48}
-            height={48}
-            className="object-contain"
-          />
+          <Link href="/">
+            <Image
+              src="/favicon.ico"
+              alt="Fonda Safaja"
+              width={100}
+              height={100}
+              className="object-contain"
+            />
+          </Link>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="btn btn-ghost btn-sm"

@@ -23,7 +23,7 @@ const Allotjament = () => {
           Un descans senzill, tranquil i ben cuidat
         </h1>
 
-        <p className="py-4 text-lg text-gray-600">
+        <p className="py-4 text-lg text-gray-600 text-justify">
           Les habitacions de la Fonda Safaja estan pensades per baixar el ritme
           i descansar com toca: espais comodes, tranquils i cuidats al detall,
           ideals per desconnectar i recuperar energia. Disposem de 5 habitacions.

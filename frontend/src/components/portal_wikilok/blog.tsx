@@ -98,7 +98,7 @@ export default function BlogClient() {
         </h1>
 
         <h2 className="text-lg text-gray-600 text-center mb-10">
-          blablabla que podem posar aqui
+          Un territori, mil camins
         </h2>
 
         {isAdminUser && (
